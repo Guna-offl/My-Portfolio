@@ -106,11 +106,11 @@ export default function Portfolio() {
   return (
     <div className="mx-auto flex min-h-screen w-full flex-col items-center">
       {/* Nav */}
-      <header className="flex w-full max-w-[600px] items-center justify-between px-5 py-6 sm:px-10">
+      <header className="flex w-full max-w-[600px] items-center justify-between px-5 py-6 sm:px-0">
         <div className="flex items-center gap-4 text-[12px] leading-4">
           <span className="text-white">GUNA</span>
-          <span className="size-1 bg-accent" />
-          <span className="text-white/70">PRODUCT DESIGNER</span>
+          <span className="hidden size-1 bg-accent sm:block" />
+          <span className="hidden whitespace-nowrap text-white/70 sm:block">PRODUCT DESIGNER</span>
         </div>
         <nav className="flex items-center gap-6 text-[12px] leading-4 text-white/70">
           <a href="#work" className="hover:text-white">WORK</a>
@@ -126,6 +126,7 @@ export default function Portfolio() {
           <Focus>
             <InteractivePortrait />
           </Focus>
+          <div className="flex flex-col gap-4">
           <Focus delay={0.15}>
           <div className="flex flex-col gap-1 text-[14px] leading-5">
             <h1 className="font-normal text-white">Hey there, I’m Guna</h1>
@@ -142,6 +143,7 @@ export default function Portfolio() {
             Previously, product designer at Recotap, redesigning its ABM platform as customers grew 200% in six months and ARR reached ₹4.5 Cr.
           </p>
           </Focus>
+          </div>
           <Focus delay={0.6}>
           <div className="flex gap-4">
             <a href={RESUME_URL} className="flex w-40 items-center justify-center rounded-lg bg-white px-3 py-2 text-[16px] font-normal leading-5 text-black transition hover:bg-white/90">
@@ -161,13 +163,13 @@ export default function Portfolio() {
           <div className="relative flex flex-col gap-3 overflow-hidden rounded-xl border border-line transition-colors hover:border-white/30">
             <CaseStudyVisual />
             <div className="flex flex-col gap-4 bg-white/[0.04] p-4">
-              <div className="flex flex-col gap-2.5 text-[14px] leading-5">
+              <div className="flex flex-col gap-2 text-[14px] leading-5">
                 <h3 className="font-normal text-white">Redesigning Recotap’s ABM Platform</h3>
                 <p className="text-muted">
                   Redesigned Recotap’s ABM platform from the ground up, helping drive +200% customer growth, 34+ companies in the pipeline, and ₹4.5 Cr ARR.
                 </p>
               </div>
-              <Link href="/case-studies/recotap" className="flex w-fit items-center gap-2.5 text-[14px] leading-[18px] text-white after:absolute after:inset-0 after:content-['']">
+              <Link href="/case-studies/recotap" className="flex w-fit items-center gap-2 text-[14px] leading-5 text-white after:absolute after:inset-0 after:content-['']">
                 view case study
                 <span aria-hidden>→</span>
               </Link>
@@ -179,16 +181,16 @@ export default function Portfolio() {
             <div className="flex h-[272px] flex-col items-center justify-center gap-4 bg-[radial-gradient(ellipse_at_top,rgba(80,70,200,0.12),transparent_70%)]">
               <img src="/assets/binary.png" alt="" className="size-12 rounded-lg object-cover opacity-50" />
               <span className="flex items-center gap-2 rounded-full border border-line px-3 py-1 text-[12px] leading-4 text-muted">
-                <svg className="size-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="3" y="7" width="10" height="7" rx="1.5" /><path d="M5 7V5a3 3 0 0 1 6 0v2" /></svg>
+                <svg className="size-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="3" y="7" width="10" height="7" rx="1.5" /><path d="M5 7V5a3 3 0 0 1 6 0v2" /></svg>
                 In progress
               </span>
             </div>
             <div className="flex flex-col gap-4 bg-white/[0.04] p-4">
-              <div className="flex flex-col gap-2.5 text-[14px] leading-5">
+              <div className="flex flex-col gap-2 text-[14px] leading-5">
                 <h3 className="font-normal text-white/70">The Binary Holdings</h3>
                 <p className="min-h-10 text-muted">Case study from my current role. Locked until the work ships.</p>
               </div>
-              <span className="flex w-fit items-center gap-2.5 text-[14px] leading-[18px] text-muted">
+              <span className="flex w-fit items-center gap-2 text-[14px] leading-5 text-muted">
                 coming soon
               </span>
             </div>
@@ -204,14 +206,14 @@ export default function Portfolio() {
               <Reveal key={e.company} delay={i * 0.15}>
                 {i > 0 && <div className="mb-3 h-px w-full bg-line" />}
                 <div className="flex items-center justify-between gap-3 text-[14px] leading-5">
-                  <div className="flex shrink-0 items-center gap-3 sm:w-[146px]">
-                    <div className="flex size-6 shrink-0 items-center justify-center overflow-hidden rounded-[3.556px]">
-                      <img src={e.logo} alt="" className={`size-full ${e.company === "Recotap" ? "object-contain p-[3px]" : "object-cover"}`} />
+                  <div className="flex shrink-0 items-center gap-3 sm:w-[160px]">
+                    <div className="flex size-6 shrink-0 items-center justify-center overflow-hidden rounded">
+                      <img src={e.logo} alt="" className={`size-full ${e.company === "Recotap" ? "object-contain p-1" : "object-cover"}`} />
                     </div>
                     <span className="text-white">{e.company}</span>
                   </div>
-                  <span className="hidden w-[120px] text-muted sm:block">{e.role}</span>
-                  <span className="w-[142px] text-right text-muted sm:text-left">{e.period}</span>
+                  <span className="hidden flex-1 text-muted sm:block">{e.role}</span>
+                  <span className="w-[144px] shrink-0 whitespace-nowrap text-right text-muted">{e.period}</span>
                 </div>
               </Reveal>
             ))}
@@ -228,7 +230,7 @@ export default function Portfolio() {
           </Reveal>
           <div className="grid gap-6 sm:grid-cols-3 sm:gap-3">
             {habits.map((h, i) => (
-              <Reveal key={h.n} delay={i * 0.2} className="flex flex-col gap-2.5">
+              <Reveal key={h.n} delay={i * 0.2} className="flex flex-col gap-2">
                 <span className="text-red">{h.n}</span>
                 <h3 className="font-normal text-white">{h.t}</h3>
                 <p className="text-muted">{h.d}</p>
@@ -237,11 +239,13 @@ export default function Portfolio() {
           </div>
         </section>
 
-        <Reveal><Box title="In my toolkit" items={toolkit} /></Reveal>
-        <Reveal><Box title="Currently exploring" items={exploring} /></Reveal>
+        <div className="flex flex-col gap-4">
+          <Reveal><Box title="In my toolkit" items={toolkit} /></Reveal>
+          <Reveal><Box title="Currently exploring" items={exploring} /></Reveal>
+        </div>
       </main>
 
-      <footer className="flex w-full max-w-[560px] gap-8 px-5 py-10 text-[14px] leading-5 text-muted sm:px-0">
+      <footer className="flex w-full max-w-[600px] gap-8 px-5 py-10 text-[14px] leading-5 text-muted sm:px-0">
         <a href={`mailto:${EMAIL}`} className="hover:text-white">{EMAIL}</a>
         <a href="https://linkedin.com/in/gunast" target="_blank" rel="noreferrer" className="hover:text-white">LinkedIn</a>
         <a href={RESUME_URL} className="hover:text-white">Resume</a>

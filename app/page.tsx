@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useCallback, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import InteractivePortrait from "@/components/InteractivePortrait";
 import CaseStudyVisual from "@/components/CaseStudyVisual";
 import RevealGrid from "@/components/RevealGrid";
+import ProcessModal from "@/components/ProcessModal";
 
 const EMAIL = "gunast96@gmail.com";
 const RESUME_URL = "/resume.pdf"; // drop your resume at public/resume.pdf
@@ -124,6 +125,9 @@ function Box({ title, items }: { title: string; items: string[] }) {
 
 export default function Portfolio() {
   const [copied, setCopied] = useState(false);
+  const [processOpen, setProcessOpen] = useState(false);
+  const processBtn = useRef<HTMLButtonElement>(null);
+  const closeProcess = useCallback(() => { setProcessOpen(false); processBtn.current?.focus(); }, []);
 
   const copyEmail = async () => {
     try {
@@ -268,7 +272,17 @@ export default function Portfolio() {
               </Focus>
             ))}
           </div>
+          <Focus inView>
+            <button
+              ref={processBtn} type="button" onClick={() => setProcessOpen(true)}
+              className="group flex w-fit items-center gap-2 rounded-lg border border-line px-3 py-2 text-[14px] leading-5 text-white transition hover:bg-white/5"
+            >
+              See how the process really moves
+              <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
+            </button>
+          </Focus>
         </section>
+        <ProcessModal open={processOpen} onClose={closeProcess} />
 
         <div className="flex flex-col gap-4">
           <Focus inView><Box title="In my toolkit" items={toolkit} /></Focus>

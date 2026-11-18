@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Gochi_Hand } from "next/font/google";
+import localFont from "next/font/local";
 
 // Everything is Geist (set in the root layout) except the sticky-note handwriting font, kept wherever the Figma used it.
-const hand = Gochi_Hand({ subsets: ["latin"], weight: "400", variable: "--font-hand" });
+const hand = localFont({ src: "./fonts/StickyNotes.ttf", weight: "400", variable: "--font-hand", fallback: ["cursive"] });
 
 export const metadata: Metadata = {
   title: "Recotap case study — Guna",

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import InteractivePortrait from "@/components/InteractivePortrait";
 import CaseStudyVisual from "@/components/CaseStudyVisual";
+import RevealGrid from "@/components/RevealGrid";
 
 const EMAIL = "gunast96@gmail.com";
 const RESUME_URL = "/resume.pdf"; // drop your resume at public/resume.pdf
@@ -132,6 +133,7 @@ export default function Portfolio() {
         <Guides />
         {/* Intro */}
         <section className="relative flex flex-col gap-8">
+          <RevealGrid className="-top-36 bottom-0 left-1/2 w-screen -translate-x-1/2 [-webkit-mask-image:linear-gradient(to_bottom,#000_60%,transparent)] [mask-image:linear-gradient(to_bottom,#000_60%,transparent)]" />
           <Focus>
             <InteractivePortrait />
           </Focus>

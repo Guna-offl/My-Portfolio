@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
 import InteractivePortrait from "@/components/InteractivePortrait";
 import CaseStudyVisual from "@/components/CaseStudyVisual";
 
@@ -23,6 +24,23 @@ const habits = [
 
 const toolkit = ["Figma", "Framer", "Claude", "After effects", "Illustrator", "Notion", "Photoshop", "Rive"];
 const exploring = ["AI-assisted design", "Prototyping in code", "Motion & interaction"];
+
+// Fades and lifts content 12px into place as it scrolls into view. Skipped for reduced-motion users.
+function Reveal({ children, delay = 0, className }: { children: React.ReactNode; delay?: number; className?: string }) {
+  const reduce = useReducedMotion();
+  if (reduce) return <div className={className}>{children}</div>;
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "0px 0px -48px 0px" }}
+      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 function Chip({ children }: { children: React.ReactNode }) {
   return (
@@ -70,6 +88,7 @@ export default function Portfolio() {
 
       <main className="flex w-full max-w-[600px] flex-col gap-20 px-5 py-20 sm:px-0">
         {/* Intro */}
+        <Reveal>
         <section className="flex flex-col gap-8">
           <InteractivePortrait />
           <div className="flex flex-col gap-1 text-[14px] leading-5">
@@ -92,9 +111,11 @@ export default function Portfolio() {
             </button>
           </div>
         </section>
+        </Reveal>
 
         {/* Work */}
         <section id="work" className="flex scroll-mt-6 flex-col gap-4">
+          <Reveal>
           <div className="relative flex flex-col gap-3 overflow-hidden rounded-xl border border-line transition-colors hover:border-white/30">
             <CaseStudyVisual />
             <div className="flex flex-col gap-4 bg-white/[0.04] p-4">
@@ -110,6 +131,8 @@ export default function Portfolio() {
               </Link>
             </div>
           </div>
+          </Reveal>
+          <Reveal delay={0.12}>
           <div aria-disabled="true" className="relative flex cursor-not-allowed select-none flex-col gap-3 overflow-hidden rounded-xl border border-line">
             <div className="flex h-[272px] flex-col items-center justify-center gap-4 bg-[radial-gradient(ellipse_at_top,rgba(80,70,200,0.12),transparent_70%)]">
               <img src="/assets/binary.png" alt="" className="size-12 rounded-lg object-cover opacity-50" />
@@ -128,14 +151,15 @@ export default function Portfolio() {
               </span>
             </div>
           </div>
+          </Reveal>
         </section>
 
         {/* Experience */}
         <section id="experience" className="flex scroll-mt-6 flex-col gap-6">
-          <h2 className="text-[14px] font-normal leading-5 text-[#e0e0e0]">Experience</h2>
+          <Reveal><h2 className="text-[14px] font-normal leading-5 text-[#e0e0e0]">Experience</h2></Reveal>
           <div className="flex flex-col gap-3">
             {experience.map((e, i) => (
-              <div key={e.company}>
+              <Reveal key={e.company} delay={i * 0.08}>
                 {i > 0 && <div className="mb-3 h-px w-full bg-line" />}
                 <div className="flex items-center justify-between gap-3 text-[14px] leading-5">
                   <div className="flex shrink-0 items-center gap-3 sm:w-[146px]">
@@ -147,30 +171,32 @@ export default function Portfolio() {
                   <span className="hidden w-[120px] text-muted sm:block">{e.role}</span>
                   <span className="w-[142px] text-right text-muted sm:text-left">{e.period}</span>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </section>
 
         {/* How I work */}
         <section className="flex flex-col gap-6 text-[14px] leading-5">
+          <Reveal>
           <div className="flex flex-col gap-1">
             <h2 className="font-normal text-[#e0e0e0]">How I work</h2>
             <p className="text-muted">Three habits I keep coming back to.</p>
           </div>
+          </Reveal>
           <div className="grid gap-6 sm:grid-cols-3 sm:gap-3">
-            {habits.map((h) => (
-              <div key={h.n} className="flex flex-col gap-2.5">
+            {habits.map((h, i) => (
+              <Reveal key={h.n} delay={i * 0.1} className="flex flex-col gap-2.5">
                 <span className="text-red">{h.n}</span>
                 <h3 className="font-normal text-white">{h.t}</h3>
                 <p className="text-muted">{h.d}</p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </section>
 
-        <Box title="In my toolkit" items={toolkit} />
-        <Box title="Currently exploring" items={exploring} />
+        <Reveal><Box title="In my toolkit" items={toolkit} /></Reveal>
+        <Reveal><Box title="Currently exploring" items={exploring} /></Reveal>
       </main>
 
       <footer className="flex w-full max-w-[560px] gap-8 px-5 py-10 text-[14px] leading-5 text-muted sm:px-0">

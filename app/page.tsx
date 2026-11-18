@@ -169,7 +169,7 @@ export default function Portfolio() {
         {/* Work */}
         <section id="work" className="flex scroll-mt-6 flex-col gap-4">
           <Focus inView>
-          <div className="relative flex flex-col gap-3 overflow-hidden rounded-xl border border-line transition-colors hover:border-white/30">
+          <div className="relative flex flex-col overflow-hidden rounded-xl border border-line transition-colors hover:border-white/30">
             <CaseStudyVisual />
             <div className="flex flex-col gap-4 bg-white/[0.04] p-4">
               <div className="flex flex-col gap-2 text-[14px] leading-5">
@@ -186,7 +186,7 @@ export default function Portfolio() {
           </div>
           </Focus>
           <Focus inView delay={0.2}>
-          <div aria-disabled="true" className="relative flex cursor-not-allowed select-none flex-col gap-3 overflow-hidden rounded-xl border border-line">
+          <div aria-disabled="true" className="relative flex cursor-not-allowed select-none flex-col overflow-hidden rounded-xl border border-line">
             <div className="flex h-[272px] flex-col items-center justify-center gap-4 bg-[radial-gradient(ellipse_at_top,rgba(80,70,200,0.12),transparent_70%)]">
               <img src="/assets/binary.png" alt="" className="size-12 rounded-lg object-cover opacity-50" />
               <span className="flex items-center gap-2 rounded-full border border-line px-3 py-1 text-[12px] leading-4 text-muted">

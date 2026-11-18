@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import InteractivePortrait from "@/components/InteractivePortrait";
@@ -32,21 +32,41 @@ const exploring = ["AI-assisted design", "Prototyping in code", "Motion & intera
 const EASE = [0.22, 1, 0.36, 1] as const;
 const IN_VIEW = { once: true, margin: "0px 0px -96px 0px" };
 
+// One shared scroll flag: the first scroll hides every guide, so none ever linger behind a moving page.
+let scrolled = false;
+const scrollListeners = new Set<() => void>();
+function onScroll() {
+  if (scrolled || window.scrollY < 4) return;
+  scrolled = true;
+  scrollListeners.forEach((l) => l());
+}
+function subscribeScroll(l: () => void) {
+  if (scrollListeners.size === 0) window.addEventListener("scroll", onScroll, { passive: true });
+  scrollListeners.add(l);
+  return () => {
+    scrollListeners.delete(l);
+    if (scrollListeners.size === 0) window.removeEventListener("scroll", onScroll);
+  };
+}
+const useScrolled = () => useSyncExternalStore(subscribeScroll, () => scrolled, () => false);
+
 type GuideProps = { axis: "h" | "v"; className: string; delay?: number; inView?: boolean; draw?: number; hold?: number };
 
 // The clip reveal keeps the dash pattern steady while the line grows.
-function GuideLine({ axis, className, delay = 0, inView = false, draw = 0.7, hold = 1.8 }: GuideProps) {
+function GuideLine({ axis, className, delay = 0, inView = false, draw = 0.6, hold = 1.2 }: GuideProps) {
   const horizontal = axis === "h";
+  const gone = useScrolled();
   const target = { clipPath: "inset(0 0% 0% 0)", opacity: 0 };
   const trigger = inView ? { whileInView: target, viewport: IN_VIEW } : { animate: target };
   return (
-    <motion.div
-      aria-hidden
-      className={`pointer-events-none absolute border-dashed border-white/20 ${horizontal ? "h-0 w-[100vw] border-t" : "w-0 border-l"} ${className}`}
-      initial={{ clipPath: horizontal ? "inset(0 100% 0 0)" : "inset(0 0 100% 0)", opacity: 1 }}
-      {...trigger}
-      transition={{ clipPath: { duration: draw, delay, ease: EASE }, opacity: { delay: hold, duration: 0.7, ease: "easeInOut" } }}
-    />
+    <div aria-hidden className="pointer-events-none absolute inset-0 transition-opacity duration-200" style={{ opacity: gone ? 0 : 1 }}>
+      <motion.div
+        className={`absolute border-dashed border-white/20 ${horizontal ? "h-0 w-[100vw] border-t" : "w-0 border-l"} ${className}`}
+        initial={{ clipPath: horizontal ? "inset(0 100% 0 0)" : "inset(0 0 100% 0)", opacity: 1 }}
+        {...trigger}
+        transition={{ clipPath: { duration: draw, delay, ease: EASE }, opacity: { delay: hold, duration: 0.4, ease: "easeOut" } }}
+      />
+    </div>
   );
 }
 
@@ -54,7 +74,7 @@ function Focus({ children, delay = 0, inView = false, className }: { children: R
   const reduce = useReducedMotion();
   if (reduce) return <div className={className}>{children}</div>;
   const lead = inView ? 0.2 : 0.6;
-  const hold = inView ? 1.4 : 1.8;
+  const hold = inView ? 0.6 : 1.3;
   const shown = { opacity: 1, y: 0, filter: "blur(0px)" };
   const trigger = inView ? { whileInView: shown, viewport: IN_VIEW } : { animate: shown };
   return (
@@ -79,8 +99,8 @@ function Guides() {
   if (reduce) return null;
   return (
     <>
-      <GuideLine axis="v" className="inset-y-0 left-5 sm:left-0" draw={1.4} hold={2.6} />
-      <GuideLine axis="v" className="inset-y-0 right-5 sm:right-0" draw={1.4} delay={0.1} hold={2.6} />
+      <GuideLine axis="v" className="inset-y-0 left-5 sm:left-0" draw={1} hold={1.3} />
+      <GuideLine axis="v" className="inset-y-0 right-5 sm:right-0" draw={1} delay={0.1} hold={1.3} />
     </>
   );
 }

@@ -73,14 +73,14 @@ export default function Portfolio() {
         <section className="flex flex-col gap-8">
           <InteractivePortrait />
           <div className="flex flex-col gap-1 text-[14px] leading-5">
-            <p className="font-normal text-white">Hey there, I’m Guna</p>
+            <h1 className="font-normal text-white">Hey there, I‚Äôm Guna</h1>
             <p className="text-muted">Product designer based in Bengaluru</p>
           </div>
           <p className="text-[14px] leading-5 text-muted">
             Currently, product designer at <span className="text-white">The Binary Holdings.</span>
           </p>
           <p className="text-[14px] leading-5 text-muted">
-            Previously, product designer at Recotap, redesigning its ABM platform as the product scaled to 3× its enterprise customer base and ₹4.5 Cr ARR.
+            Previously, product designer at Recotap, redesigning its ABM platform as customers grew 200% in six months and ARR reached ‚Çπ4.5 Cr.
           </p>
           <div className="flex gap-4">
             <a href={RESUME_URL} className="flex w-40 items-center justify-center rounded-lg bg-white px-3 py-2 text-[16px] font-normal leading-5 text-black transition hover:bg-white/90">
@@ -94,20 +94,38 @@ export default function Portfolio() {
         </section>
 
         {/* Work */}
-        <section id="work" className="scroll-mt-6">
+        <section id="work" className="flex scroll-mt-6 flex-col gap-4">
           <div className="relative flex flex-col gap-3 overflow-hidden rounded-xl border border-line transition-colors hover:border-white/30">
             <CaseStudyVisual />
             <div className="flex flex-col gap-4 bg-white/[0.04] p-4">
               <div className="flex flex-col gap-2.5 text-[14px] leading-5">
-                <h3 className="font-normal text-white">Redesigning Recotap’s ABM Platform</h3>
+                <h3 className="font-normal text-white">Redesigning Recotap‚Äôs ABM Platform</h3>
                 <p className="text-muted">
-                  Redesigned Recotap’s ABM platform from the ground up, helping drive 3× enterprise customer growth, ₹4.5 Cr ARR, and a 30% lift in user activation.
+                  Redesigned Recotap‚Äôs ABM platform from the ground up, helping drive +200% customer growth, 34+ companies in the pipeline, and ‚Çπ4.5 Cr ARR.
                 </p>
               </div>
               <Link href="/case-studies/recotap" className="flex w-fit items-center gap-2.5 text-[14px] leading-[18px] text-white after:absolute after:inset-0 after:content-['']">
                 view case study
-                <span aria-hidden>→</span>
+                <span aria-hidden>‚Üí</span>
               </Link>
+            </div>
+          </div>
+          <div aria-disabled="true" className="relative flex cursor-not-allowed select-none flex-col gap-3 overflow-hidden rounded-xl border border-line">
+            <div className="flex h-[272px] flex-col items-center justify-center gap-4 bg-[radial-gradient(ellipse_at_top,rgba(80,70,200,0.12),transparent_70%)]">
+              <img src="/assets/binary.png" alt="" className="size-12 rounded-lg object-cover opacity-50" />
+              <span className="flex items-center gap-2 rounded-full border border-line px-3 py-1 text-[12px] leading-4 text-muted">
+                <svg className="size-3.5" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="3" y="7" width="10" height="7" rx="1.5" /><path d="M5 7V5a3 3 0 0 1 6 0v2" /></svg>
+                In progress
+              </span>
+            </div>
+            <div className="flex flex-col gap-4 bg-white/[0.04] p-4">
+              <div className="flex flex-col gap-2.5 text-[14px] leading-5">
+                <h3 className="font-normal text-white/70">The Binary Holdings</h3>
+                <p className="min-h-10 text-muted">Case study from my current role. Locked until the work ships.</p>
+              </div>
+              <span className="flex w-fit items-center gap-2.5 text-[14px] leading-[18px] text-muted">
+                coming soon
+              </span>
             </div>
           </div>
         </section>

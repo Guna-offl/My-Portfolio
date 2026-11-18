@@ -5,8 +5,8 @@ import "./globals.css";
 const geist = Geist({ subsets: ["latin"], weight: ["300", "400", "500", "700"], variable: "--font-geist" });
 
 export const metadata: Metadata = {
-  title: "Guna — Product Designer",
-  description: "Product designer based in Bengaluru.",
+  title: "Guna ‚Äî Product Designer",
+  description: "Guna is a product designer in Bengaluru with 5+ years in B2B SaaS. Case study: redesigning Recotap‚Äôs ABM platform.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

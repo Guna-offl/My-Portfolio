@@ -29,7 +29,7 @@ export default function RecotapCaseStudy() {
 </header>
 <div className="k-herogrp"><div className="k-bezel rv"><img className="k-img" src="/case-study/hero.webp" width="1006" height="741" alt="Recotap overview dashboard in the redesigned product" fetchPriority="high" /></div><div className="k-meta rv">
 <div className="k-mi"><span className="k-mic">🎨</span><div><p>My role</p><b>Product Designer</b></div></div><i className="k-vl"></i>
-<div className="k-mi"><span className="k-mic">⏳</span><div><p>Timeline</p><b>4-5 months</b></div></div><i className="k-vl"></i>
+<div className="k-mi"><span className="k-mic">⏳</span><div><p>Timeline</p><b>4-5 months + iterations</b></div></div><i className="k-vl"></i>
 <div className="k-mi"><span className="k-mic">🏷️</span><div><p>Category</p><b>B2B SaaS / ABM</b></div></div><i className="k-vl"></i>
 <div className="k-mi"><span className="k-mic">📅</span><div><p>Year</p><b>2025</b></div></div>
 </div></div>

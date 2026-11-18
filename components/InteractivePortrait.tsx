@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
 
 // Cursor position each photo "owns" (x: -1 left … 1 right, y: -1 up … 1 down).
-const POSES = [
+// `file` / `flip` let a pose reuse another photo, mirrored (left-down is the mirror of right-down).
+const POSES: readonly { id: string; file?: string; flip?: boolean; x: number; y: number }[] = [
   { id: "front", x: 0, y: 0 },
   { id: "l3q", x: -0.5, y: 0 },
   { id: "lprof", x: -1, y: 0 },
@@ -14,7 +15,8 @@ const POSES = [
   { id: "down", x: 0, y: 0.9 },
   { id: "lup", x: -0.75, y: -0.7 },
   { id: "rdown", x: 0.75, y: 0.7 },
-] as const;
+  { id: "ldown", file: "rdown", flip: true, x: -0.75, y: 0.7 },
+];
 
 const SPRING = { stiffness: 90, damping: 20, mass: 0.8 };
 const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
@@ -81,7 +83,7 @@ export default function InteractivePortrait({ maxWidth = 340, base = "/poses" }:
     <div ref={ref} className="ip" style={{ maxWidth }} role="img" aria-label="Portrait of Guna">
       <motion.div className="ip-stack" style={{ rotateX: rotX, rotateY: rotY }}>
         {POSES.map((p, i) => (
-          <img key={p.id} src={`${base}/${p.id}.webp`} alt="" draggable={false} className="ip-img" style={{ opacity: i === active ? 1 : 0 }} />
+          <img key={p.id} src={`${base}/${p.file ?? p.id}.webp`} alt="" draggable={false} className="ip-img" style={{ opacity: i === active ? 1 : 0, transform: p.flip ? "scaleX(-1)" : undefined }} />
         ))}
       </motion.div>
     </div>

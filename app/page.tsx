@@ -42,36 +42,53 @@ function Reveal({ children, delay = 0, className }: { children: React.ReactNode;
   );
 }
 
-// Intro entrance: each item resolves from a blur into focus, one after another (top to bottom).
+// Dashed layout guide that draws itself in (clip reveal keeps the dash pattern steady),
+// holds while the content resolves, then fades away. Mirrors the opening of a design-tool canvas.
+const GUIDE_DRAW = { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const };
+const GUIDE_FADE = { delay: 1.8, duration: 0.7, ease: "easeInOut" as const };
+
+function GuideLine({ axis, className, delay = 0 }: { axis: "h" | "v"; className: string; delay?: number }) {
+  const horizontal = axis === "h";
+  return (
+    <motion.div
+      aria-hidden
+      className={`pointer-events-none absolute border-dashed border-white/20 ${horizontal ? "h-0 w-[100vw] border-t" : "w-0 border-l"} ${className}`}
+      initial={{ clipPath: horizontal ? "inset(0 100% 0 0)" : "inset(0 0 100% 0)", opacity: 1 }}
+      animate={{ clipPath: "inset(0 0% 0% 0)", opacity: 0 }}
+      transition={{ clipPath: { ...GUIDE_DRAW, delay }, opacity: GUIDE_FADE }}
+    />
+  );
+}
+
+// Intro entrance: a full-width guide above and below each block, then the block resolves
+// from a blur into focus, one after another (top to bottom).
 function Focus({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   const reduce = useReducedMotion();
   if (reduce) return <div>{children}</div>;
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 8, filter: "blur(8px)" }}
-      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
-    >
-      {children}
-    </motion.div>
+    <div className="relative">
+      <GuideLine axis="h" className="left-1/2 top-0 -translate-x-1/2" delay={0.1 + delay / 2} />
+      <GuideLine axis="h" className="bottom-0 left-1/2 -translate-x-1/2" delay={0.2 + delay / 2} />
+      <motion.div
+        initial={{ opacity: 0, y: 8, filter: "blur(8px)" }}
+        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+        transition={{ duration: 0.7, delay: 0.6 + delay, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {children}
+      </motion.div>
+    </div>
   );
 }
 
-// Dashed guide lines that draw in while the intro loads, then fade away.
+// Vertical guides along both column edges, drawn top to bottom.
 function Guides() {
   const reduce = useReducedMotion();
   if (reduce) return null;
   return (
-    <motion.div
-      aria-hidden
-      className="pointer-events-none absolute -inset-x-4 -inset-y-8 border-x border-dashed border-white/20"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: [0, 1, 1, 0] }}
-      transition={{ duration: 2.4, times: [0, 0.25, 0.7, 1], ease: "easeInOut" }}
-    >
-      <div className="absolute inset-x-0 top-0 border-t border-dashed border-white/20" />
-      <div className="absolute inset-x-0 bottom-0 border-t border-dashed border-white/20" />
-    </motion.div>
+    <>
+      <GuideLine axis="v" className="-bottom-8 -top-8 left-0" />
+      <GuideLine axis="v" className="-bottom-8 -top-8 right-0" delay={0.1} />
+    </>
   );
 }
 
@@ -104,7 +121,7 @@ export default function Portfolio() {
   };
 
   return (
-    <div className="mx-auto flex min-h-screen w-full flex-col items-center">
+    <div className="mx-auto flex min-h-screen w-full flex-col items-center overflow-x-clip">
       {/* Nav */}
       <header className="flex w-full max-w-[600px] items-center justify-between px-5 py-6 sm:px-0">
         <div className="flex items-center gap-4 text-[12px] leading-4">
@@ -127,24 +144,24 @@ export default function Portfolio() {
             <InteractivePortrait />
           </Focus>
           <div className="flex flex-col gap-4">
-          <Focus delay={0.15}>
+          <Focus delay={0.12}>
           <div className="flex flex-col gap-1 text-[14px] leading-5">
             <h1 className="font-normal text-white">Hey there, I’m Guna</h1>
             <p className="text-muted">Product designer based in Bengaluru</p>
           </div>
           </Focus>
-          <Focus delay={0.3}>
+          <Focus delay={0.24}>
           <p className="text-[14px] leading-5 text-muted">
             Currently, product designer at <span className="text-white">The Binary Holdings.</span>
           </p>
           </Focus>
-          <Focus delay={0.45}>
+          <Focus delay={0.36}>
           <p className="text-[14px] leading-5 text-muted">
             Previously, product designer at Recotap, redesigning its ABM platform as customers grew 200% in six months and ARR reached ₹4.5 Cr.
           </p>
           </Focus>
           </div>
-          <Focus delay={0.6}>
+          <Focus delay={0.48}>
           <div className="flex gap-4">
             <a href={RESUME_URL} className="flex w-40 items-center justify-center rounded-lg bg-white px-3 py-2 text-[16px] font-normal leading-5 text-black transition hover:bg-white/90">
               Resume

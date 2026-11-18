@@ -18,6 +18,9 @@ const POSES: readonly { id: string; file?: string; flip?: boolean; x: number; y:
   { id: "ldown", file: "rdown", flip: true, x: -0.75, y: 0.7 },
 ];
 
+// With no cursor nearby (page just opened, or the pointer left the window) the face glances down and to
+// the right, then comes alive as soon as the cursor moves. Touch screens have no hover, so they keep the front pose.
+const IDLE = { id: "rdown", x: 0.75, y: 0.7 };
 const SPRING = { stiffness: 90, damping: 20, mass: 0.8 };
 const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
 
@@ -35,6 +38,7 @@ export default function InteractivePortrait({ maxWidth = 340, base = "/poses" }:
   const rotX = useTransform(y, [-1, 1], [2, -2]);
   const [active, setActive] = useState(0);
   const cur = useRef(0);
+  const idle = useRef({ x: 0, y: 0 });
 
   // Pick the nearest photo to the smoothed cursor position; a small margin stops flicker at the borders.
   useEffect(() => {
@@ -50,6 +54,15 @@ export default function InteractivePortrait({ maxWidth = 340, base = "/poses" }:
     return () => { a(); b(); };
   }, [reduce, x, y]);
 
+  // Hover-capable screens start in the idle glance (set before the portrait fades in).
+  useEffect(() => {
+    if (reduce || !window.matchMedia("(hover: hover)").matches) return;
+    idle.current = { x: IDLE.x, y: IDLE.y };
+    mx.set(IDLE.x); my.set(IDLE.y); x.jump(IDLE.x); y.jump(IDLE.y);
+    const i = POSES.findIndex((p) => p.id === IDLE.id);
+    cur.current = i; setActive(i);
+  }, [reduce, mx, my, x, y]);
+
   useEffect(() => {
     if (reduce) return;
     const move = (e: PointerEvent) => {
@@ -64,15 +77,16 @@ export default function InteractivePortrait({ maxWidth = 340, base = "/poses" }:
       mx.set(clamp(nx, -1, 1) * fall);
       my.set(clamp(ny, -1, 1) * fall);
     };
-    const rest = () => { mx.set(0); my.set(0); };
+    const rest = () => { mx.set(idle.current.x); my.set(idle.current.y); };
+    const up = (e: PointerEvent) => { if (e.pointerType !== "mouse") rest(); }; // a mouse click keeps following
     window.addEventListener("pointermove", move, { passive: true });
-    window.addEventListener("pointerup", rest);
+    window.addEventListener("pointerup", up);
     window.addEventListener("pointercancel", rest);
     window.addEventListener("blur", rest);
     document.documentElement.addEventListener("mouseleave", rest);
     return () => {
       window.removeEventListener("pointermove", move);
-      window.removeEventListener("pointerup", rest);
+      window.removeEventListener("pointerup", up);
       window.removeEventListener("pointercancel", rest);
       window.removeEventListener("blur", rest);
       document.documentElement.removeEventListener("mouseleave", rest);

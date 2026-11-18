@@ -208,12 +208,12 @@ export default function Portfolio() {
         </section>
 
         {/* Experience */}
-        <section id="experience" className="flex scroll-mt-6 flex-col gap-6">
+        <section id="experience" className="flex scroll-mt-6 flex-col gap-8">
           <Focus inView><h2 className="text-[14px] font-normal leading-5 text-[#e0e0e0]">Experience</h2></Focus>
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-4">
             {experience.map((e, i) => (
               <Focus inView key={e.company} delay={i * 0.15}>
-                {i > 0 && <div className="mb-3 h-px w-full bg-line" />}
+                {i > 0 && <div className="mb-4 h-px w-full bg-line" />}
                 <div className="flex items-center justify-between gap-3 text-[14px] leading-5">
                   <div className="flex shrink-0 items-center gap-3 sm:w-[160px]">
                     <div className="flex size-6 shrink-0 items-center justify-center overflow-hidden rounded">

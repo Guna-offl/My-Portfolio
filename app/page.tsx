@@ -73,14 +73,14 @@ export default function Portfolio() {
         <section className="flex flex-col gap-8">
           <InteractivePortrait />
           <div className="flex flex-col gap-1 text-[14px] leading-5">
-            <h1 className="font-normal text-white">Hey there, I‚Äôm Guna</h1>
+            <h1 className="font-normal text-white">Hey there, I’m Guna</h1>
             <p className="text-muted">Product designer based in Bengaluru</p>
           </div>
           <p className="text-[14px] leading-5 text-muted">
             Currently, product designer at <span className="text-white">The Binary Holdings.</span>
           </p>
           <p className="text-[14px] leading-5 text-muted">
-            Previously, product designer at Recotap, redesigning its ABM platform as customers grew 200% in six months and ARR reached ‚Çπ4.5 Cr.
+            Previously, product designer at Recotap, redesigning its ABM platform as customers grew 200% in six months and ARR reached ₹4.5 Cr.
           </p>
           <div className="flex gap-4">
             <a href={RESUME_URL} className="flex w-40 items-center justify-center rounded-lg bg-white px-3 py-2 text-[16px] font-normal leading-5 text-black transition hover:bg-white/90">
@@ -99,14 +99,14 @@ export default function Portfolio() {
             <CaseStudyVisual />
             <div className="flex flex-col gap-4 bg-white/[0.04] p-4">
               <div className="flex flex-col gap-2.5 text-[14px] leading-5">
-                <h3 className="font-normal text-white">Redesigning Recotap‚Äôs ABM Platform</h3>
+                <h3 className="font-normal text-white">Redesigning Recotap’s ABM Platform</h3>
                 <p className="text-muted">
-                  Redesigned Recotap‚Äôs ABM platform from the ground up, helping drive +200% customer growth, 34+ companies in the pipeline, and ‚Çπ4.5 Cr ARR.
+                  Redesigned Recotap’s ABM platform from the ground up, helping drive +200% customer growth, 34+ companies in the pipeline, and ₹4.5 Cr ARR.
                 </p>
               </div>
               <Link href="/case-studies/recotap" className="flex w-fit items-center gap-2.5 text-[14px] leading-[18px] text-white after:absolute after:inset-0 after:content-['']">
                 view case study
-                <span aria-hidden>‚Üí</span>
+                <span aria-hidden>→</span>
               </Link>
             </div>
           </div>

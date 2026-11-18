@@ -25,54 +25,46 @@ const habits = [
 const toolkit = ["Figma", "Framer", "Claude", "After effects", "Illustrator", "Notion", "Photoshop", "Rive"];
 const exploring = ["AI-assisted design", "Prototyping in code", "Motion & interaction"];
 
-// Fades and lifts content 32px into place as it scrolls into view. Skipped for reduced-motion users.
-function Reveal({ children, delay = 0, className }: { children: React.ReactNode; delay?: number; className?: string }) {
-  const reduce = useReducedMotion();
-  if (reduce) return <div className={className}>{children}</div>;
-  return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y: 32, scale: 0.98 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, margin: "0px 0px -96px 0px" }}
-      transition={{ duration: 0.9, delay, ease: [0.22, 1, 0.36, 1] }}
-    >
-      {children}
-    </motion.div>
-  );
-}
+// Page-wide entrance. A dashed guide draws in above and below each block, the block resolves from
+// a blur into focus, then the guides fade away. The first screen plays on load and later blocks
+// play as they scroll into view. Skipped for reduced-motion users.
+const EASE = [0.22, 1, 0.36, 1] as const;
+const IN_VIEW = { once: true, margin: "0px 0px -96px 0px" };
 
-// Dashed layout guide that draws itself in (clip reveal keeps the dash pattern steady),
-// holds while the content resolves, then fades away. Mirrors the opening of a design-tool canvas.
-const GUIDE_DRAW = { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const };
-const GUIDE_FADE = { delay: 1.8, duration: 0.7, ease: "easeInOut" as const };
+type GuideProps = { axis: "h" | "v"; className: string; delay?: number; inView?: boolean; draw?: number; hold?: number };
 
-function GuideLine({ axis, className, delay = 0 }: { axis: "h" | "v"; className: string; delay?: number }) {
+// The clip reveal keeps the dash pattern steady while the line grows.
+function GuideLine({ axis, className, delay = 0, inView = false, draw = 0.7, hold = 1.8 }: GuideProps) {
   const horizontal = axis === "h";
+  const target = { clipPath: "inset(0 0% 0% 0)", opacity: 0 };
+  const trigger = inView ? { whileInView: target, viewport: IN_VIEW } : { animate: target };
   return (
     <motion.div
       aria-hidden
       className={`pointer-events-none absolute border-dashed border-white/20 ${horizontal ? "h-0 w-[100vw] border-t" : "w-0 border-l"} ${className}`}
       initial={{ clipPath: horizontal ? "inset(0 100% 0 0)" : "inset(0 0 100% 0)", opacity: 1 }}
-      animate={{ clipPath: "inset(0 0% 0% 0)", opacity: 0 }}
-      transition={{ clipPath: { ...GUIDE_DRAW, delay }, opacity: GUIDE_FADE }}
+      {...trigger}
+      transition={{ clipPath: { duration: draw, delay, ease: EASE }, opacity: { delay: hold, duration: 0.7, ease: "easeInOut" } }}
     />
   );
 }
 
-// Intro entrance: a full-width guide above and below each block, then the block resolves
-// from a blur into focus, one after another (top to bottom).
-function Focus({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+function Focus({ children, delay = 0, inView = false, className }: { children: React.ReactNode; delay?: number; inView?: boolean; className?: string }) {
   const reduce = useReducedMotion();
-  if (reduce) return <div>{children}</div>;
+  if (reduce) return <div className={className}>{children}</div>;
+  const lead = inView ? 0.2 : 0.6;
+  const hold = inView ? 1.4 : 1.8;
+  const shown = { opacity: 1, y: 0, filter: "blur(0px)" };
+  const trigger = inView ? { whileInView: shown, viewport: IN_VIEW } : { animate: shown };
   return (
     <div className="relative">
-      <GuideLine axis="h" className="left-1/2 top-0 -translate-x-1/2" delay={0.1 + delay / 2} />
-      <GuideLine axis="h" className="bottom-0 left-1/2 -translate-x-1/2" delay={0.2 + delay / 2} />
+      <GuideLine axis="h" className="left-1/2 top-0 -translate-x-1/2" delay={delay / 2} inView={inView} hold={hold} />
+      <GuideLine axis="h" className="bottom-0 left-1/2 -translate-x-1/2" delay={0.1 + delay / 2} inView={inView} hold={hold} />
       <motion.div
+        className={className}
         initial={{ opacity: 0, y: 8, filter: "blur(8px)" }}
-        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        transition={{ duration: 0.7, delay: 0.6 + delay, ease: [0.22, 1, 0.36, 1] }}
+        {...trigger}
+        transition={{ duration: 0.7, delay: lead + delay, ease: EASE }}
       >
         {children}
       </motion.div>
@@ -80,14 +72,14 @@ function Focus({ children, delay = 0 }: { children: React.ReactNode; delay?: num
   );
 }
 
-// Vertical guides along both column edges, drawn top to bottom.
+// Vertical guides down both column edges, drawn top to bottom across the whole page.
 function Guides() {
   const reduce = useReducedMotion();
   if (reduce) return null;
   return (
     <>
-      <GuideLine axis="v" className="-bottom-8 -top-8 left-0" />
-      <GuideLine axis="v" className="-bottom-8 -top-8 right-0" delay={0.1} />
+      <GuideLine axis="v" className="inset-y-0 left-5 sm:left-0" draw={1.4} hold={2.6} />
+      <GuideLine axis="v" className="inset-y-0 right-5 sm:right-0" draw={1.4} delay={0.1} hold={2.6} />
     </>
   );
 }
@@ -102,7 +94,7 @@ function Box({ title, items }: { title: string; items: string[] }) {
   return (
     <section className="flex flex-col gap-4 rounded-xl border border-line p-4">
       <h2 className="text-[14px] font-normal leading-5 text-[#e0e0e0]">{title}</h2>
-      <div className="flex flex-wrap gap-4">
+      <div className="flex flex-wrap gap-3">
         {items.map((i) => <Chip key={i}>{i}</Chip>)}
       </div>
     </section>
@@ -136,10 +128,10 @@ export default function Portfolio() {
         </nav>
       </header>
 
-      <main className="flex w-full max-w-[600px] flex-col gap-20 px-5 py-20 sm:px-0">
+      <main className="relative flex w-full max-w-[600px] flex-col gap-20 px-5 py-20 sm:px-0">
+        <Guides />
         {/* Intro */}
         <section className="relative flex flex-col gap-8">
-          <Guides />
           <Focus>
             <InteractivePortrait />
           </Focus>
@@ -176,7 +168,7 @@ export default function Portfolio() {
 
         {/* Work */}
         <section id="work" className="flex scroll-mt-6 flex-col gap-4">
-          <Reveal>
+          <Focus inView>
           <div className="relative flex flex-col gap-3 overflow-hidden rounded-xl border border-line transition-colors hover:border-white/30">
             <CaseStudyVisual />
             <div className="flex flex-col gap-4 bg-white/[0.04] p-4">
@@ -192,8 +184,8 @@ export default function Portfolio() {
               </Link>
             </div>
           </div>
-          </Reveal>
-          <Reveal delay={0.2}>
+          </Focus>
+          <Focus inView delay={0.2}>
           <div aria-disabled="true" className="relative flex cursor-not-allowed select-none flex-col gap-3 overflow-hidden rounded-xl border border-line">
             <div className="flex h-[272px] flex-col items-center justify-center gap-4 bg-[radial-gradient(ellipse_at_top,rgba(80,70,200,0.12),transparent_70%)]">
               <img src="/assets/binary.png" alt="" className="size-12 rounded-lg object-cover opacity-50" />
@@ -212,15 +204,15 @@ export default function Portfolio() {
               </span>
             </div>
           </div>
-          </Reveal>
+          </Focus>
         </section>
 
         {/* Experience */}
         <section id="experience" className="flex scroll-mt-6 flex-col gap-6">
-          <Reveal><h2 className="text-[14px] font-normal leading-5 text-[#e0e0e0]">Experience</h2></Reveal>
+          <Focus inView><h2 className="text-[14px] font-normal leading-5 text-[#e0e0e0]">Experience</h2></Focus>
           <div className="flex flex-col gap-3">
             {experience.map((e, i) => (
-              <Reveal key={e.company} delay={i * 0.15}>
+              <Focus inView key={e.company} delay={i * 0.15}>
                 {i > 0 && <div className="mb-3 h-px w-full bg-line" />}
                 <div className="flex items-center justify-between gap-3 text-[14px] leading-5">
                   <div className="flex shrink-0 items-center gap-3 sm:w-[160px]">
@@ -232,37 +224,37 @@ export default function Portfolio() {
                   <span className="hidden flex-1 text-muted sm:block">{e.role}</span>
                   <span className="w-[144px] shrink-0 whitespace-nowrap text-right text-muted">{e.period}</span>
                 </div>
-              </Reveal>
+              </Focus>
             ))}
           </div>
         </section>
 
         {/* How I work */}
         <section className="flex flex-col gap-6 text-[14px] leading-5">
-          <Reveal>
+          <Focus inView>
           <div className="flex flex-col gap-1">
             <h2 className="font-normal text-[#e0e0e0]">How I work</h2>
             <p className="text-muted">Three habits I keep coming back to.</p>
           </div>
-          </Reveal>
-          <div className="grid gap-6 sm:grid-cols-3 sm:gap-3">
+          </Focus>
+          <div className="grid gap-6 sm:grid-cols-3 sm:gap-6">
             {habits.map((h, i) => (
-              <Reveal key={h.n} delay={i * 0.2} className="flex flex-col gap-2">
+              <Focus inView key={h.n} delay={i * 0.2} className="flex flex-col gap-2">
                 <span className="text-red">{h.n}</span>
                 <h3 className="font-normal text-white">{h.t}</h3>
                 <p className="text-muted">{h.d}</p>
-              </Reveal>
+              </Focus>
             ))}
           </div>
         </section>
 
         <div className="flex flex-col gap-4">
-          <Reveal><Box title="In my toolkit" items={toolkit} /></Reveal>
-          <Reveal><Box title="Currently exploring" items={exploring} /></Reveal>
+          <Focus inView><Box title="In my toolkit" items={toolkit} /></Focus>
+          <Focus inView><Box title="Currently exploring" items={exploring} /></Focus>
         </div>
       </main>
 
-      <footer className="flex w-full max-w-[600px] gap-8 px-5 py-10 text-[14px] leading-5 text-muted sm:px-0">
+      <footer className="flex w-full max-w-[600px] gap-8 px-5 pb-10 text-[14px] leading-5 text-muted sm:px-0">
         <a href={`mailto:${EMAIL}`} className="hover:text-white">{EMAIL}</a>
         <a href="https://linkedin.com/in/gunast" target="_blank" rel="noreferrer" className="hover:text-white">LinkedIn</a>
         <a href={RESUME_URL} className="hover:text-white">Resume</a>

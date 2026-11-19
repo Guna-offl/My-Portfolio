@@ -158,9 +158,11 @@ export default function Portfolio() {
         {/* Intro */}
         <section className="relative flex flex-col gap-8">
           <RevealGrid className="-top-36 bottom-0 left-1/2 w-screen -translate-x-1/2 [-webkit-mask-image:linear-gradient(to_bottom,#000_60%,transparent)] [mask-image:linear-gradient(to_bottom,#000_60%,transparent)]" />
-          <Focus>
-            <InteractivePortrait />
-          </Focus>
+          <div className="-mb-4">
+            <Focus>
+              <InteractivePortrait />
+            </Focus>
+          </div>
           <div className="flex flex-col gap-4">
           <Focus delay={0.12}>
           <div className="flex flex-col gap-1 text-[14px] leading-5">

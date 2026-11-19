@@ -24,7 +24,7 @@ export function setTheme(next: Theme) {
   window.setTimeout(() => root.classList.remove("theme-fade"), 350);
 }
 
-export function ThemeToggle() {
+export function ThemeToggle({ flush = false }: { flush?: boolean }) {
   const theme = useTheme();
   const next: Theme = theme === "light" ? "dark" : "light";
   return (
@@ -33,7 +33,7 @@ export function ThemeToggle() {
       onClick={() => setTheme(next)}
       aria-label={`Switch to ${next} mode`}
       title={`Switch to ${next} mode`}
-      className="-mr-2 flex size-8 items-center justify-center rounded-full text-fg/70 transition hover:bg-fg/5 hover:text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-fg"
+      className={`${flush ? "" : "-mr-2 "}flex size-8 items-center justify-center rounded-full text-fg/70 transition hover:bg-fg/5 hover:text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-fg`}
     >
       <svg className="size-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
         {theme === "light" ? (

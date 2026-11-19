@@ -6,11 +6,13 @@
 :root {
   --c-bg: 13 13 13; --c-fg: 255 255 255; --c-fg-soft: 224 224 224; --c-card: 17 17 17;
   --c-line: 39 44 52; --c-muted: 122 136 158; --c-accent: 147 255 59; --c-red: 235 71 54;
+  --c-note: 196 196 196; --c-good: 74 222 128;
   color-scheme: dark;
 }
 :root[data-theme="light"] {
   --c-bg: 247 247 244; --c-fg: 13 13 13; --c-fg-soft: 38 38 38; --c-card: 255 255 255;
   --c-line: 214 218 224; --c-muted: 86 97 115; --c-accent: 47 158 0; --c-red: 201 52 37;
+  --c-note: 95 105 120; --c-good: 21 128 61;
   color-scheme: light;
 }
 html { background: rgb(var(--c-bg)); }

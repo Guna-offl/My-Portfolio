@@ -7,7 +7,6 @@ import InteractivePortrait from "@/components/InteractivePortrait";
 import CaseStudyVisual from "@/components/CaseStudyVisual";
 import RevealGrid from "@/components/RevealGrid";
 import ProcessModal from "@/components/ProcessModal";
-import { ThemeToggle } from "@/components/theme";
 
 const EMAIL = "gunast96@gmail.com";
 const RESUME_URL = "/resume.pdf"; // drop your resume at public/resume.pdf
@@ -151,7 +150,6 @@ export default function Portfolio() {
           <a href="#work" className="hover:text-fg">WORK</a>
           <a href="#experience" className="hover:text-fg">EXPERIENCE</a>
           <a href={RESUME_URL} className="hover:text-fg">RESUME</a>
-          <ThemeToggle />
         </nav>
       </header>
 

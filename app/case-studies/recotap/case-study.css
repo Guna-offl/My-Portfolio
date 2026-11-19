@@ -169,5 +169,3 @@ a{color:inherit;text-decoration:none}
 .k-aside{font-size:24px;line-height:32px;color:var(--note);max-width:none;text-align:right}
 
 .k-back{min-height:44px;align-items:center}
-/* light theme: a softer top glow, and the table's Recotap column keeps white text on blue */
-:root[data-theme="light"] .k-root::before{opacity:.45}

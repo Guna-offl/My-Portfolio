@@ -2,7 +2,6 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useTheme } from "./theme";
 
 /**
  * "How the process really moves": a hand-drawn flowchart that opens in a modal. A clean linear process
@@ -11,10 +10,8 @@ import { useTheme } from "./theme";
  */
 
 type Layer = "base" | "red" | "violet" | "blue" | "teal" | "yellow" | "pink";
-// Bright layer colours on dark, deeper ones on light so strokes keep their contrast.
-const PALETTES: Record<"dark" | "light", Record<Layer, string>> = {
-  dark: { base: "#9aa4b2", red: "#eb4736", violet: "#a78bfa", blue: "#6d8dff", teal: "#3ddbc0", yellow: "#ffd24a", pink: "#ff6ad5" },
-  light: { base: "#6b7280", red: "#d63a2a", violet: "#7c5cd6", blue: "#3d5fd8", teal: "#0f9a85", yellow: "#c28a00", pink: "#cf2f9c" },
+const COLORS: Record<Layer, string> = {
+  base: "#9aa4b2", red: "#eb4736", violet: "#a78bfa", blue: "#6d8dff", teal: "#3ddbc0", yellow: "#ffd24a", pink: "#ff6ad5",
 };
 // When each layer starts, in seconds from opening.
 const START: Record<Layer, number> = { base: 0.2, red: 3.8, violet: 5.2, blue: 6.2, teal: 8.0, yellow: 9.6, pink: 11.0 };
@@ -121,7 +118,6 @@ const pop = (delay: number, instant: boolean) => ({
 });
 
 function Diagram({ instant }: { instant: boolean }) {
-  const COLORS = PALETTES[useTheme()];
   const [phase, setPhase] = useState<1 | 2>(instant ? 2 : 1);
   useEffect(() => {
     if (instant) return;

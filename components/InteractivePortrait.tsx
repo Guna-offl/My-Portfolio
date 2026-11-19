@@ -27,7 +27,7 @@ const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
 type Props = { maxWidth?: number; base?: string };
 
 /** One photo is visible at a time (frame swapping, like the reference), so there is never a ghost of another pose. */
-export default function InteractivePortrait({ maxWidth = 340, base = "/poses" }: Props) {
+export default function InteractivePortrait({ maxWidth = 240, base = "/poses" }: Props) {
   const reduce = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const mx = useMotionValue(0);

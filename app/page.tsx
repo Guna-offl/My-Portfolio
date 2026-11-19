@@ -7,6 +7,7 @@ import InteractivePortrait from "@/components/InteractivePortrait";
 import CaseStudyVisual from "@/components/CaseStudyVisual";
 import RevealGrid from "@/components/RevealGrid";
 import ProcessModal from "@/components/ProcessModal";
+import { ThemeToggle } from "@/components/theme";
 
 const EMAIL = "gunast96@gmail.com";
 const RESUME_URL = "/resume.pdf"; // drop your resume at public/resume.pdf
@@ -62,7 +63,7 @@ function GuideLine({ axis, className, delay = 0, inView = false, draw = 0.6, hol
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 transition-opacity duration-200" style={{ opacity: gone ? 0 : 1 }}>
       <motion.div
-        className={`absolute border-dashed border-white/20 ${horizontal ? "h-0 w-[100vw] border-t" : "w-0 border-l"} ${className}`}
+        className={`absolute border-dashed border-fg/20 ${horizontal ? "h-0 w-[100vw] border-t" : "w-0 border-l"} ${className}`}
         initial={{ clipPath: horizontal ? "inset(0 100% 0 0)" : "inset(0 0 100% 0)", opacity: 1 }}
         {...trigger}
         transition={{ clipPath: { duration: draw, delay, ease: EASE }, opacity: { delay: hold, duration: 0.4, ease: "easeOut" } }}
@@ -115,7 +116,7 @@ function Chip({ children }: { children: React.ReactNode }) {
 function Box({ title, items }: { title: string; items: string[] }) {
   return (
     <section className="flex flex-col gap-4 rounded-xl border border-line p-4">
-      <h2 className="text-[14px] font-normal leading-5 text-[#e0e0e0]">{title}</h2>
+      <h2 className="text-[14px] font-normal leading-5 text-fg-soft">{title}</h2>
       <div className="flex flex-wrap gap-3">
         {items.map((i) => <Chip key={i}>{i}</Chip>)}
       </div>
@@ -142,14 +143,15 @@ export default function Portfolio() {
       {/* Nav */}
       <header className="flex w-full max-w-[600px] items-center justify-between px-5 py-6 sm:px-0">
         <div className="flex items-center gap-4 text-[12px] leading-4">
-          <span className="text-white">GUNA</span>
+          <span className="text-fg">GUNA</span>
           <span className="hidden size-1 bg-accent sm:block" />
-          <span className="hidden whitespace-nowrap text-white/70 sm:block">PRODUCT DESIGNER</span>
+          <span className="hidden whitespace-nowrap text-fg/70 sm:block">PRODUCT DESIGNER</span>
         </div>
-        <nav className="flex items-center gap-6 text-[12px] leading-4 text-white/70">
-          <a href="#work" className="hover:text-white">WORK</a>
-          <a href="#experience" className="hover:text-white">EXPERIENCE</a>
-          <a href={RESUME_URL} className="hover:text-white">RESUME</a>
+        <nav className="flex items-center gap-6 text-[12px] leading-4 text-fg/70">
+          <a href="#work" className="hover:text-fg">WORK</a>
+          <a href="#experience" className="hover:text-fg">EXPERIENCE</a>
+          <a href={RESUME_URL} className="hover:text-fg">RESUME</a>
+          <ThemeToggle />
         </nav>
       </header>
 
@@ -164,13 +166,13 @@ export default function Portfolio() {
           <div className="flex flex-col gap-4">
           <Focus delay={0.12}>
           <div className="flex flex-col gap-1 text-[14px] leading-5">
-            <h1 className="font-normal text-white">Hey there, I’m Guna</h1>
+            <h1 className="font-normal text-fg">Hey there, I’m Guna</h1>
             <p className="text-muted">Product designer based in Bengaluru</p>
           </div>
           </Focus>
           <Focus delay={0.24}>
           <p className="text-[14px] leading-5 text-muted">
-            Currently, product designer at <span className="text-white">The Binary Holdings.</span>
+            Currently, product designer at <span className="text-fg">The Binary Holdings.</span>
           </p>
           </Focus>
           <Focus delay={0.36}>
@@ -181,10 +183,10 @@ export default function Portfolio() {
           </div>
           <Focus delay={0.48}>
           <div className="flex gap-4">
-            <a href={RESUME_URL} className="flex w-40 items-center justify-center rounded-lg bg-white px-3 py-2 text-[16px] font-normal leading-5 text-black transition hover:bg-white/90">
+            <a href={RESUME_URL} className="flex w-40 items-center justify-center rounded-lg bg-fg px-3 py-2 text-[16px] font-normal leading-5 text-bg transition hover:bg-fg/90">
               Resume
             </a>
-            <button onClick={copyEmail} className="flex w-40 items-center justify-center gap-3 rounded-lg border border-line px-3 py-2 text-[16px] font-normal leading-5 text-white transition hover:bg-white/5">
+            <button onClick={copyEmail} className="flex w-40 items-center justify-center gap-3 rounded-lg border border-line px-3 py-2 text-[16px] font-normal leading-5 text-fg transition hover:bg-fg/5">
               <svg className="size-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden><rect x="7" y="7" width="9" height="9" rx="2" /><path d="M13 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2" /></svg>
               {copied ? "Copied" : "Copy Email"}
             </button>
@@ -195,16 +197,16 @@ export default function Portfolio() {
         {/* Work */}
         <section id="work" className="flex scroll-mt-6 flex-col gap-4">
           <Focus inView>
-          <div className="relative flex flex-col overflow-hidden rounded-xl border border-line transition-colors hover:border-white/30">
+          <div className="relative flex flex-col overflow-hidden rounded-xl border border-line transition-colors hover:border-fg/30">
             <CaseStudyVisual />
-            <div className="flex flex-col gap-4 bg-white/[0.04] p-4">
+            <div className="flex flex-col gap-4 bg-fg/[0.04] p-4">
               <div className="flex flex-col gap-2 text-[14px] leading-5">
-                <h3 className="font-normal text-white">Redesigning Recotap’s ABM Platform</h3>
+                <h3 className="font-normal text-fg">Redesigning Recotap’s ABM Platform</h3>
                 <p className="text-muted">
                   Redesigned Recotap’s ABM platform from the ground up, helping drive +200% customer growth, 34+ companies in the pipeline, and ₹4.5 Cr ARR.
                 </p>
               </div>
-              <Link href="/case-studies/recotap" className="flex w-fit items-center gap-2 text-[14px] leading-5 text-white after:absolute after:inset-0 after:content-['']">
+              <Link href="/case-studies/recotap" className="flex w-fit items-center gap-2 text-[14px] leading-5 text-fg after:absolute after:inset-0 after:content-['']">
                 view case study
                 <span aria-hidden>→</span>
               </Link>
@@ -220,9 +222,9 @@ export default function Portfolio() {
                 In progress
               </span>
             </div>
-            <div className="flex flex-col gap-4 bg-white/[0.04] p-4">
+            <div className="flex flex-col gap-4 bg-fg/[0.04] p-4">
               <div className="flex flex-col gap-2 text-[14px] leading-5">
-                <h3 className="font-normal text-white/70">The Binary Holdings</h3>
+                <h3 className="font-normal text-fg/70">The Binary Holdings</h3>
                 <p className="min-h-10 text-muted">Case study from my current role. Locked until the work ships.</p>
               </div>
               <span className="flex w-fit items-center gap-2 text-[14px] leading-5 text-muted">
@@ -235,7 +237,7 @@ export default function Portfolio() {
 
         {/* Experience */}
         <section id="experience" className="flex scroll-mt-6 flex-col gap-8">
-          <Focus inView><h2 className="text-[14px] font-normal leading-5 text-[#e0e0e0]">Experience</h2></Focus>
+          <Focus inView><h2 className="text-[14px] font-normal leading-5 text-fg-soft">Experience</h2></Focus>
           <div className="flex flex-col gap-4">
             {experience.map((e, i) => (
               <Focus inView key={e.company} delay={i * 0.15}>
@@ -245,7 +247,7 @@ export default function Portfolio() {
                     <div className="flex size-6 shrink-0 items-center justify-center overflow-hidden rounded">
                       <img src={e.logo} alt="" className={`size-full ${e.company === "Recotap" ? "object-contain p-1" : "object-cover"}`} />
                     </div>
-                    <span className="text-white">{e.company}</span>
+                    <span className="text-fg">{e.company}</span>
                   </div>
                   <span className="hidden flex-1 text-muted sm:block">{e.role}</span>
                   <span className="w-[144px] shrink-0 whitespace-nowrap text-right text-muted">{e.period}</span>
@@ -259,7 +261,7 @@ export default function Portfolio() {
         <section className="flex flex-col gap-6 text-[14px] leading-5">
           <Focus inView>
           <div className="flex flex-col gap-1">
-            <h2 className="font-normal text-[#e0e0e0]">How I work</h2>
+            <h2 className="font-normal text-fg-soft">How I work</h2>
             <p className="text-muted">Three habits I keep coming back to.</p>
           </div>
           </Focus>
@@ -267,7 +269,7 @@ export default function Portfolio() {
             {habits.map((h, i) => (
               <Focus inView key={h.n} delay={i * 0.2} className="flex flex-col gap-2">
                 <span className="text-red">{h.n}</span>
-                <h3 className="font-normal text-white">{h.t}</h3>
+                <h3 className="font-normal text-fg">{h.t}</h3>
                 <p className="text-muted">{h.d}</p>
               </Focus>
             ))}
@@ -275,7 +277,7 @@ export default function Portfolio() {
           <Focus inView>
             <button
               ref={processBtn} type="button" onClick={() => setProcessOpen(true)}
-              className="group flex w-fit items-center gap-2 rounded-lg border border-line px-3 py-2 text-[14px] leading-5 text-white transition hover:bg-white/5"
+              className="group flex w-fit items-center gap-2 rounded-lg border border-line px-3 py-2 text-[14px] leading-5 text-fg transition hover:bg-fg/5"
             >
               See how the process really moves
               <span aria-hidden className="transition-transform group-hover:translate-x-1">→</span>
@@ -291,9 +293,9 @@ export default function Portfolio() {
       </main>
 
       <footer className="flex w-full max-w-[600px] gap-8 px-5 pb-10 text-[14px] leading-5 text-muted sm:px-0">
-        <a href={`mailto:${EMAIL}`} className="hover:text-white">{EMAIL}</a>
-        <a href="https://linkedin.com/in/gunast" target="_blank" rel="noreferrer" className="hover:text-white">LinkedIn</a>
-        <a href={RESUME_URL} className="hover:text-white">Resume</a>
+        <a href={`mailto:${EMAIL}`} className="hover:text-fg">{EMAIL}</a>
+        <a href="https://linkedin.com/in/gunast" target="_blank" rel="noreferrer" className="hover:text-fg">LinkedIn</a>
+        <a href={RESUME_URL} className="hover:text-fg">Resume</a>
       </footer>
     </div>
   );

@@ -5,7 +5,8 @@ import { useReducedMotion } from "framer-motion";
 
 const CELL = 32;    // grid pitch, px (multiple of 4)
 const REACH = 160;  // radius of the revealed circle, px
-const ACCENT = "147,255,59";
+// Accent colour follows the active theme (bright green on dark, a deeper green on light).
+const accent = () => getComputedStyle(document.documentElement).getPropertyValue("--c-accent").trim().replace(/\s+/g, ",") || "147,255,59";
 
 /**
  * Background grid that is invisible until the cursor arrives: only a soft circle of it shows around
@@ -36,6 +37,7 @@ export default function RevealGrid({ className = "" }: { className?: string }) {
 
       ctx.clearRect(0, 0, w, h);
       if (k > 0.004) {
+        const ACCENT = accent();
         ctx.beginPath();
         for (let x = 0; x <= w; x += CELL) { ctx.moveTo(x, 0); ctx.lineTo(x, h); }
         for (let y = 0; y <= h; y += CELL) { ctx.moveTo(0, y); ctx.lineTo(w, y); }

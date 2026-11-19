@@ -2,6 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useTheme } from "./theme";
 
 /**
  * "How the process really moves": a hand-drawn flowchart that opens in a modal. A clean linear process
@@ -10,8 +11,10 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
  */
 
 type Layer = "base" | "red" | "violet" | "blue" | "teal" | "yellow" | "pink";
-const COLORS: Record<Layer, string> = {
-  base: "#9aa4b2", red: "#eb4736", violet: "#a78bfa", blue: "#6d8dff", teal: "#3ddbc0", yellow: "#ffd24a", pink: "#ff6ad5",
+// Bright layer colours on dark, deeper ones on light so strokes keep their contrast.
+const PALETTES: Record<"dark" | "light", Record<Layer, string>> = {
+  dark: { base: "#9aa4b2", red: "#eb4736", violet: "#a78bfa", blue: "#6d8dff", teal: "#3ddbc0", yellow: "#ffd24a", pink: "#ff6ad5" },
+  light: { base: "#6b7280", red: "#d63a2a", violet: "#7c5cd6", blue: "#3d5fd8", teal: "#0f9a85", yellow: "#c28a00", pink: "#cf2f9c" },
 };
 // When each layer starts, in seconds from opening.
 const START: Record<Layer, number> = { base: 0.2, red: 3.8, violet: 5.2, blue: 6.2, teal: 8.0, yellow: 9.6, pink: 11.0 };
@@ -80,10 +83,10 @@ const EDGES: EdgeD[] = [
 
 const at = (layer: Layer, offset: number, instant: boolean) => (instant ? 0 : START[layer] + offset);
 
-function Edge({ e, instant }: { e: EdgeD; instant: boolean }) {
+function Edge({ e, instant, color }: { e: EdgeD; instant: boolean; color: string }) {
   const ref = useRef<SVGPathElement>(null);
   const [head, setHead] = useState<string | null>(null);
-  const delay = at(e.layer, e.at, instant), dur = instant ? 0 : e.dur ?? 0.45, color = COLORS[e.layer];
+  const delay = at(e.layer, e.at, instant), dur = instant ? 0 : e.dur ?? 0.45;
   useLayoutEffect(() => {
     const p = ref.current;
     if (!p) return;
@@ -118,6 +121,7 @@ const pop = (delay: number, instant: boolean) => ({
 });
 
 function Diagram({ instant }: { instant: boolean }) {
+  const COLORS = PALETTES[useTheme()];
   const [phase, setPhase] = useState<1 | 2>(instant ? 2 : 1);
   useEffect(() => {
     if (instant) return;
@@ -146,7 +150,7 @@ function Diagram({ instant }: { instant: boolean }) {
         <g filter="url(#rough)">
           {(["base", "red", "violet", "blue", "teal", "yellow", "pink"] as Layer[]).map((layer) => (
             <motion.g key={layer} {...dim(layer)}>
-              {EDGES.filter((e) => e.layer === layer).map((e) => <Edge key={e.d} e={e} instant={instant} />)}
+              {EDGES.filter((e) => e.layer === layer).map((e) => <Edge key={e.d} e={e} instant={instant} color={COLORS[e.layer]} />)}
               {NODES.filter((n) => n.layer === layer).map((n) => {
                 const h = nodeH(n);
                 return (
@@ -164,7 +168,7 @@ function Diagram({ instant }: { instant: boolean }) {
           {NODES.map((n) => (
             <motion.g key={n.id} {...(n.layer === "base" ? dim("base") : {})}>
               <motion.text
-                textAnchor="middle" fontSize={13} fill={n.layer === "base" ? "#e6e9ef" : "#f4f6fa"} fontWeight={400}
+                textAnchor="middle" fontSize={13} fontWeight={400} style={{ fill: n.layer === "base" ? "rgb(var(--c-fg-soft))" : "rgb(var(--c-fg))" }}
                 initial={{ opacity: instant ? 1 : 0 }} animate={{ opacity: 1 }} transition={{ delay: at(n.layer, n.at, instant) + 0.1, duration: 0.3 }}
               >
                 {n.lines.map((line, i) => (
@@ -194,7 +198,7 @@ export default function ProcessModal({ open, onClose }: { open: boolean; onClose
     return () => { document.body.style.overflow = prev; window.removeEventListener("keydown", key); };
   }, [open, onClose]);
 
-  const pill = "rounded-full border border-line px-3 py-1 text-[12px] leading-4 text-white transition hover:bg-white/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white";
+  const pill = "rounded-full border border-line px-3 py-1 text-[12px] leading-4 text-fg transition hover:bg-fg/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-fg";
   return (
     <AnimatePresence>
       {open && (
@@ -204,11 +208,11 @@ export default function ProcessModal({ open, onClose }: { open: boolean; onClose
         >
           <motion.div
             role="dialog" aria-modal="true" aria-labelledby="process-title" onClick={(e) => e.stopPropagation()}
-            className="flex max-h-full w-full max-w-[1040px] flex-col gap-4 overflow-hidden rounded-xl border border-line bg-[#111] p-4 sm:p-6"
+            className="flex max-h-full w-full max-w-[1040px] flex-col gap-4 overflow-hidden rounded-xl border border-line bg-card p-4 sm:p-6"
             initial={{ opacity: 0, y: 16, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 8, scale: 0.98 }} transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="flex items-center justify-between gap-4">
-              <h2 id="process-title" className="text-[14px] font-normal leading-5 text-white">How I work</h2>
+              <h2 id="process-title" className="text-[14px] font-normal leading-5 text-fg">How I work</h2>
               <div className="flex gap-2">
                 <button type="button" className={pill} onClick={() => setRun((r) => r + 1)}>Replay</button>
                 <button type="button" ref={closeRef} className={pill} onClick={onClose}>✕ Close</button>

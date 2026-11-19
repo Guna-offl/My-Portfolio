@@ -11,8 +11,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={geist.variable}>
-      <body className="bg-bg font-sans text-white">{children}</body>
+    <html lang="en" className={geist.variable} suppressHydrationWarning>
+      <head>
+        {/* Apply the saved theme before first paint so there is no flash. ?theme=light|dark also works. */}
+        <script dangerouslySetInnerHTML={{ __html: `(function(){try{var q=new URLSearchParams(location.search).get("theme");var t=(q==="light"||q==="dark")?q:localStorage.getItem("theme");if(t==="light")document.documentElement.dataset.theme="light"}catch(e){}})()` }} />
+      </head>
+      <body className="bg-bg font-sans text-fg">{children}</body>
     </html>
   );
 }

@@ -4,11 +4,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        bg: "#0d0d0d",
-        line: "#272c34",
-        muted: "#7a889e",
-        accent: "#93ff3b",
-        red: "#eb4736",
+        // Theme tokens live in app/globals.css (dark by default, light under data-theme="light").
+        bg: "rgb(var(--c-bg) / <alpha-value>)",
+        fg: "rgb(var(--c-fg) / <alpha-value>)",
+        "fg-soft": "rgb(var(--c-fg-soft) / <alpha-value>)",
+        card: "rgb(var(--c-card) / <alpha-value>)",
+        line: "rgb(var(--c-line) / <alpha-value>)",
+        muted: "rgb(var(--c-muted) / <alpha-value>)",
+        accent: "rgb(var(--c-accent) / <alpha-value>)",
+        red: "rgb(var(--c-red) / <alpha-value>)",
       },
       fontFamily: { sans: ["var(--font-geist)", "system-ui", "sans-serif"] },
     },

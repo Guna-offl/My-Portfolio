@@ -2,7 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-html { background: #0d0d0d; }
+/* Theme tokens, as space-separated RGB so Tailwind can add opacity. Dark is the default. */
+:root {
+  --c-bg: 13 13 13; --c-fg: 255 255 255; --c-fg-soft: 224 224 224; --c-card: 17 17 17;
+  --c-line: 39 44 52; --c-muted: 122 136 158; --c-accent: 147 255 59; --c-red: 235 71 54;
+  color-scheme: dark;
+}
+:root[data-theme="light"] {
+  --c-bg: 247 247 244; --c-fg: 13 13 13; --c-fg-soft: 38 38 38; --c-card: 255 255 255;
+  --c-line: 214 218 224; --c-muted: 86 97 115; --c-accent: 47 158 0; --c-red: 201 52 37;
+  color-scheme: light;
+}
+html { background: rgb(var(--c-bg)); }
+/* Brief colour fade while switching theme (colours only, so motion is unaffected). */
+html.theme-fade, html.theme-fade *, html.theme-fade *::before, html.theme-fade *::after {
+  transition: background-color .3s ease, color .3s ease, border-color .3s ease, fill .3s ease, stroke .3s ease !important;
+}
 body { font-weight: 300; -webkit-font-smoothing: antialiased; }
 html { scroll-behavior: smooth; }
 
@@ -10,6 +25,13 @@ html { scroll-behavior: smooth; }
 /* Interactive portrait: fluid width, one photo visible at a time, soft edges */
 .ip { position: relative; width: min(340px, 78vw); aspect-ratio: 85 / 57; perspective: 900px;
   -webkit-mask-image: radial-gradient(ellipse 62% 98% at 50% 28%, #000 52%, transparent 100%); mask-image: radial-gradient(ellipse 62% 98% at 50% 28%, #000 52%, transparent 100%); }
+/* On a light background the photo needs a gentler fade at the shoulders and a soft top, or its straight cut edges show. */
+:root[data-theme="light"] .ip {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 8%), radial-gradient(ellipse 62% 98% at 50% 28%, #000 36%, transparent 86%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to bottom, transparent 0, #000 8%), radial-gradient(ellipse 62% 98% at 50% 28%, #000 36%, transparent 86%);
+  mask-composite: intersect;
+}
 .ip-stack { position: absolute; inset: 0; will-change: transform; }
 .ip-img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; user-select: none; pointer-events: none; }
 

@@ -41,3 +41,10 @@ html { scroll-behavior: smooth; }
 .cs-pill.hot{color:#93ff3b;border-color:rgba(147,255,59,.35);background:rgba(147,255,59,.06)}
 .cs-pill.mid{color:#a7a7ff;border-color:rgba(109,109,255,.4);background:rgba(109,109,255,.08)}
 @media(max-width:420px){.cs-kpi{padding:8px}.cs-kpi small{font-size:10px}.cs-kpi .sp{display:none}.cs-kpi b{font-size:16px;line-height:20px;white-space:nowrap}}
+
+/* Square pointer used on every page: a solid #F7402D square in place of the mouse cursor. The real cursor is only hidden
+   once the script has added the class, so it is never lost. */
+.sq{position:fixed;left:-7px;top:-7px;width:14px;height:14px;background:#f7402d;pointer-events:none;z-index:2147483647;opacity:0;transition:opacity .15s,scale .15s}
+.sq[data-state="link"]{scale:1.6}
+.sq[data-state="off"]{scale:.8;opacity:.45!important}
+html.has-sq,html.has-sq *{cursor:none!important}

@@ -1,11 +1,26 @@
 "use client";
 
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import type { CSSProperties } from "react";
 import Link from "next/link";
 import "./case-study.css";
 
 export default function RecotapCaseStudy() {
+  const router = useRouter();
+
+  // Esc returns to the homepage (the work section, where the card for this case study lives).
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape" || e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey) return;
+      const t = e.target as HTMLElement | null;
+      if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+      router.push("/#work");
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [router]);
+
   // Fade sections in as they scroll into view.
   useEffect(() => {
     const els = document.querySelectorAll<HTMLElement>(".rv");
@@ -21,6 +36,11 @@ export default function RecotapCaseStudy() {
   return (
     <main className="k-root">
 <noscript><style>{".rv{opacity:1;transform:none}"}</style></noscript>
+<header className="k-top">
+<Link className="k-backtop" href="/#work"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M13 8H3M7.5 3.5L3 8l4.5 4.5" /></svg>Back</Link>
+<nav className="k-crumbs" aria-label="Breadcrumb"><Link href="/#work">Selected work</Link><span aria-hidden="true">/</span><span aria-current="page">Recotap</span></nav>
+<span className="k-eschint" aria-hidden="true">Esc</span>
+</header>
       <div className="k-page">
 <header className="k-hero-head rv">
 <div className="k-wm" role="img" aria-label="Recotap"><span>rec</span><img className="k-pin" src="/assets/recotap.png" alt="" /><span>tap</span></div>
@@ -52,6 +72,7 @@ export default function RecotapCaseStudy() {
 <section className="k-sec"><div className="k-center rv"><p className="k-kick">What my work contributed to</p><h2 className="k-h">IMPACT</h2></div><div className="k-igrid rv"><div className="k-imp"><span className="k-ico" aria-hidden="true">📈</span><p className="k-big k-good">+200%</p><p className="k-lbl">Customer growth in 6 months after the redesign</p></div><div className="k-imp"><span className="k-ico" aria-hidden="true">🏢</span><p className="k-big">34+</p><p className="k-lbl">Companies entering the pipeline</p></div><div className="k-imp"><span className="k-ico" aria-hidden="true">💰</span><p className="k-big k-good">₹4.5 Cr</p><p className="k-lbl">Annual recurring revenue (INR)</p></div><div className="k-imp"><span className="k-ico" aria-hidden="true">⚡</span><p className="k-big"><span className="k-from">5</span><span className="k-to k-good"><svg className="k-iarr" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-label="to"><path d="M4 12h16M14 6l6 6-6 6"/></svg>1 Screen</span></p><p className="k-lbl">Campaign setup consolidated from a 5-step flow into one view, with every input kept</p></div><div className="k-imp"><span className="k-ico" aria-hidden="true">✅</span><p className="k-big k-good">No drop-off</p><p className="k-lbl">after launch, down from 30 - 40%</p></div><div className="k-imp"><span className="k-ico" aria-hidden="true">⏱️</span><p className="k-big">~15 mins</p><p className="k-lbl">average to set up a campaign, across 20+ launches. Down from ~45 mins (from user interviews)</p></div></div></section>
 <section className="k-sec"><div className="k-two rv"><div className="k-head"><p className="k-kick">After everything, what I</p><h2 className="k-h">LEARNED &amp; FACED</h2></div><div className="k-body k-learns"><div className="k-learn"><h3>🧭 Owning design decisions alone</h3><p>I was the only designer, so I made the design calls myself and worked through them with the PM, CTO and CEO.</p></div><div className="k-learn"><h3>♻️ Iterative design mindset</h3><p>Adapted quickly to frequent feedback loops and evolving product requirements, while keeping the core user experience consistent and focused.</p></div><div className="k-learn"><h3>🤷‍♂️ Design for decisions, not data</h3><p>ABM is data-heavy by nature. The real challenge was turning signals, accounts, and campaign metrics into clear next actions.</p></div><div className="k-learn"><h3>🛠️ Design system is a product tool</h3><p>Building reusable patterns wasn’t just about visual consistency. It made the product easier to scale and allowed new experiences to be designed faster.</p></div></div></div></section>
 <footer className="k-thanks rv"><p className="k-hand">Thank</p><p className="k-hand">You...</p><Link className="k-back" href="/#work">← Back to portfolio</Link></footer>
+<p className="k-esc">Press Esc to return home.</p>
       </div>
     </main>
   );

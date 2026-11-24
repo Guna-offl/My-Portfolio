@@ -3,11 +3,11 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Replaces the mouse pointer on every page with a small solid #F7402D square that changes slightly with what is under it:
- *   default        8px solid square (also over text)
- *   links, buttons 12px hollow square (2px outline), so it never turns into a big block over large clickable cards
- *   disabled       a smaller, dimmed square
- *   mouse pressed  shrinks slightly
+ * Replaces the mouse pointer on every page with a small solid #F7402D square, always between 8px and 12px:
+ *   default                  8px (also over text)
+ *   links, buttons           12px
+ *   disabled items           8px, dimmed
+ *   mouse pressed            back down to 8px
  * Only on devices with a real pointer, and only once this has loaded, so there is never a moment with no cursor.
  */
 export default function SquareCursor() {

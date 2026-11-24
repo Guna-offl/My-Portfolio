@@ -36,8 +36,8 @@ export default function RecotapCaseStudy() {
   return (
     <main className="k-root">
 <noscript><style>{".rv{opacity:1;transform:none}"}</style></noscript>
-      <div className="k-page">
 <Link className="k-backtop" href="/#work"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M13 8H3M7.5 3.5L3 8l4.5 4.5" /></svg>Back</Link>
+      <div className="k-page">
 <header className="k-hero-head rv">
 <div className="k-wm" role="img" aria-label="Recotap"><span>rec</span><img className="k-pin" src="/assets/recotap.png" alt="" /><span>tap</span></div>
 <h1 className="k-tag">Turning complex ABM workflows into confident actions</h1>

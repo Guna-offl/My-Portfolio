@@ -42,14 +42,15 @@ html { scroll-behavior: smooth; }
 .cs-pill.mid{color:#a7a7ff;border-color:rgba(109,109,255,.4);background:rgba(109,109,255,.08)}
 @media(max-width:420px){.cs-kpi{padding:8px}.cs-kpi small{font-size:10px}.cs-kpi .sp{display:none}.cs-kpi b{font-size:16px;line-height:20px;white-space:nowrap}}
 
-/* Square pointer used on every page: a small #F7402D square in place of the mouse cursor that changes slightly over links and disabled items. The real cursor is only hidden
+/* Square pointer used on every page: a small #F7402D square in place of the mouse cursor that is 8px, and 12px over links and buttons. The real cursor is only hidden
    once the script has added the class, so it is never lost. */
-.sq{position:fixed;left:0;top:0;width:8px;height:8px;margin:-4px 0 0 -4px;box-sizing:border-box;background:#f7402d;border:0 solid #f7402d;pointer-events:none;z-index:2147483647;opacity:0;
-  transition:opacity .15s,width .15s,height .15s,margin .15s,background-color .15s,border-width .15s,scale .1s}
-/* links and buttons: a hollow square, only slightly larger than the default */
-.sq[data-state="link"]{width:12px;height:12px;margin:-6px 0 0 -6px;background-color:transparent;border-width:2px}
-/* disabled items: smaller and dimmed */
-.sq[data-state="off"]{width:6px;height:6px;margin:-3px 0 0 -3px;opacity:.45!important}
-/* pressing the mouse */
-.sq[data-down="1"]{scale:.7}
+.sq{position:fixed;left:0;top:0;width:8px;height:8px;margin:-4px 0 0 -4px;background:#f7402d;pointer-events:none;z-index:2147483647;opacity:0;
+  transition:opacity .15s,width .15s,height .15s,margin .15s}
+/* The pointer is always a solid square between 8px (smallest) and 12px (biggest). */
+/* links and buttons: the biggest size */
+.sq[data-state="link"]{width:12px;height:12px;margin:-6px 0 0 -6px}
+/* disabled items: the smallest size, dimmed */
+.sq[data-state="off"]{opacity:.45!important}
+/* pressing the mouse: back down to the smallest size */
+.sq[data-down="1"]{width:8px;height:8px;margin:-4px 0 0 -4px}
 html.has-sq,html.has-sq *{cursor:none!important}

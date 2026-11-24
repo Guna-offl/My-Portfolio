@@ -38,7 +38,7 @@ export default function RecotapCaseStudy() {
 <noscript><style>{".rv{opacity:1;transform:none}"}</style></noscript>
 <header className="k-top">
 <Link className="k-backtop" href="/#work"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M13 8H3M7.5 3.5L3 8l4.5 4.5" /></svg>Back</Link>
-<nav className="k-crumbs" aria-label="Breadcrumb"><Link href="/">Index</Link><span aria-hidden="true">/</span><Link href="/#work">Selected work</Link><span aria-hidden="true">/</span><span aria-current="page">Recotap</span></nav>
+<nav className="k-crumbs" aria-label="Breadcrumb"><Link href="/#work">Selected work</Link><span aria-hidden="true">/</span><span aria-current="page">Recotap</span></nav>
 <span className="k-eschint" aria-hidden="true">Esc</span>
 </header>
       <div className="k-page">

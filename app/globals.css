@@ -42,9 +42,16 @@ html { scroll-behavior: smooth; }
 .cs-pill.mid{color:#a7a7ff;border-color:rgba(109,109,255,.4);background:rgba(109,109,255,.08)}
 @media(max-width:420px){.cs-kpi{padding:8px}.cs-kpi small{font-size:10px}.cs-kpi .sp{display:none}.cs-kpi b{font-size:16px;line-height:20px;white-space:nowrap}}
 
-/* Square pointer used on every page: a solid #F7402D square in place of the mouse cursor. The real cursor is only hidden
+/* Square pointer used on every page: a small #F7402D square in place of the mouse cursor that changes shape over links, text and disabled items. The real cursor is only hidden
    once the script has added the class, so it is never lost. */
-.sq{position:fixed;left:-7px;top:-7px;width:14px;height:14px;background:#f7402d;pointer-events:none;z-index:2147483647;opacity:0;transition:opacity .15s,scale .15s}
-.sq[data-state="link"]{scale:1.6}
-.sq[data-state="off"]{scale:.8;opacity:.45!important}
+.sq{position:fixed;left:0;top:0;width:10px;height:10px;margin:-5px 0 0 -5px;box-sizing:border-box;background:#f7402d;border:0 solid #f7402d;pointer-events:none;z-index:2147483647;opacity:0;
+  transition:opacity .15s,width .15s,height .15s,margin .15s,background-color .15s,border-width .15s,scale .1s}
+/* links and buttons: a hollow square, only slightly larger than the default */
+.sq[data-state="link"]{width:14px;height:14px;margin:-7px 0 0 -7px;background-color:transparent;border-width:2px}
+/* text: a thin caret-like bar as tall as the line under the pointer */
+.sq[data-state="text"]{width:2px;height:var(--sq-h,18px);margin:calc(var(--sq-h,18px) / -2) 0 0 -1px}
+/* disabled items: smaller and dimmed */
+.sq[data-state="off"]{width:8px;height:8px;margin:-4px 0 0 -4px;opacity:.45!important}
+/* pressing the mouse */
+.sq[data-down="1"]{scale:.7}
 html.has-sq,html.has-sq *{cursor:none!important}
